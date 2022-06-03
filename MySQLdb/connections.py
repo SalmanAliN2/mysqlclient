@@ -218,8 +218,12 @@ class Connection(_mysql.connection):
 
         def unicode_literal(u, dummy=None):
             return db.string_literal(u.encode(db.encoding))
-
+        
+        def unicode_literal_dict(u, dummy=None):
+            return db.string_literal(str(u).encode(db.encoding))
+             
         self.encoders[str] = unicode_literal
+        self.encoders[dict] = unicode_literal_dict
 
         self._transactional = self.server_capabilities & CLIENT.TRANSACTIONS
         if self._transactional:
